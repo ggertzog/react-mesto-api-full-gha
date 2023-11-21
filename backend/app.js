@@ -9,7 +9,7 @@ const { login, createUser } = require('./controllers/users');
 const auth = require('./middlewares/auth');
 const { signinValidate, signupValidate } = require('./middlewares/requestValidation');
 
-const { PORT = 4001 } = process.env;
+const { PORT = 3001 } = process.env;
 
 mongoose.connect('mongodb://127.0.0.1:27017/mestodb');
 
