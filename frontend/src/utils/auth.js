@@ -2,28 +2,6 @@ import { checkResponse } from "./checkResponse";
 
 const BASE_URL = 'http://localhost:3000';
 
-// const _request = (url, method, body, token) => {
-//     const options = {
-//         method: method,
-//         headers: {
-//             // "Accept": "application/json",
-//             "Content-Type": "application/json",
-//         },
-//     };
-//     if (body) {
-//         options.body = JSON.stringify(body);
-//     }
-//     if (token) {
-//         options.headers.authorization = `Bearer ${token}`;
-//     }
-//     return fetch(`${BASE_URL}`, options).then((res) => {
-//         if (res.ok) {
-//             return res.json();
-//         }
-//         throw new Error(`Ошибка ${res.status}`);
-//     })
-// }
-
 function _request(url, method, body, token) {
 
     const headers = {
