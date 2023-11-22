@@ -1,6 +1,6 @@
 import { checkResponse } from "./checkResponse";
 
-const BASE_URL = 'http://localhost:3001';
+const BASE_URL = 'https://api.gertzog.nomoredomainsmonster.ru';
 
 function _request(url, method, body, token) {
 

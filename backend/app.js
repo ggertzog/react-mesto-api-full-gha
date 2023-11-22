@@ -8,6 +8,7 @@ const router = require('./routes');
 const { login, createUser } = require('./controllers/users');
 const auth = require('./middlewares/auth');
 const { signinValidate, signupValidate } = require('./middlewares/requestValidation');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const { PORT, DB_ADDRESS } = process.env;
 
@@ -26,12 +27,21 @@ app.get('/crash-test', () => {
     throw new Error('Сервер сейчас упадёт');
   }, 0);
 });
+// логгер запросов
+app.use(requestLogger);
 
+// роуты авторизации
 app.post('/signin', signinValidate, login);
 app.post('/signup', signupValidate, createUser);
 
+// мидлвэр авторизации
 app.use(auth);
+
+// остальные роуты
 app.use(router);
+
+// логгер ошибок
+app.use(errorLogger);
 
 // обработчик ошибок celebrate
 app.use(errors());
