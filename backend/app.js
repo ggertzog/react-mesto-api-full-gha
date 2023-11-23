@@ -43,7 +43,7 @@ app.use(router);
 // логгер ошибок
 app.use(errorLogger);
 
-// обработчик ошибок celebrate
+// центральный обработчик ошибок celebrate
 app.use(errors());
 
 // централизованный обработчик ошибок

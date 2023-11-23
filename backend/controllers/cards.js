@@ -43,6 +43,7 @@ module.exports.deleteCard = async (req, res, next) => {
   } catch(err) {
     if(err instanceof CastError) {
       next(new IncorrectError('Переданы некорректные данные'));
+      return;
     }
     next(err);
   }
