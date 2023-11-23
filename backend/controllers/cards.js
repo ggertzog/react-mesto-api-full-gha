@@ -31,7 +31,7 @@ module.exports.createCard = (req, res, next) => {
 
 module.exports.deleteCard =  (req, res, next) => {
     Card
-      .findByIdAndRemove(req.params.cardId)
+      .findById(req.params.cardId)
       .orFail(() => {
         throw new NotFoundError('Карточка не найдена');
       })
@@ -39,7 +39,9 @@ module.exports.deleteCard =  (req, res, next) => {
         if(card.owner.toString() !== req.user._id.toString()) {
           throw new AccessError('Ошибка прав доступа');
         }
-        res.status(ERROR_CODE.OK).send({ message: 'Карточка удалена'});
+        card.deleteOne().then(() => {
+          res.status(ERROR_CODE.OK).send({ message: 'Карточка удалена'});
+      });
       })
       .catch((err) => {
         if(err instanceof CastError) {
