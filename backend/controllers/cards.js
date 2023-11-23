@@ -39,8 +39,6 @@ module.exports.deleteCard = async (req, res, next) => {
     if(card.owner.toString() !== req.user._id.toString()) {
       throw new AccessError('Ошибка прав доступа');
     }
-    console.log(card.owner);
-    console.log(req.user._id);
     card.deleteOne().then(() => {
       res.status(ERROR_CODE.OK).send(card);
     })
