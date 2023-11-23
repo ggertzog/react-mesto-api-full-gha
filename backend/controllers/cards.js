@@ -39,9 +39,8 @@ module.exports.deleteCard = async (req, res, next) => {
     if(card.owner.toString() !== req.user._id.toString()) {
       throw new AccessError('Ошибка прав доступа');
     }
-    card.deleteOne().then(() => {
-      res.status(ERROR_CODE.OK).send(card);
-    })
+    card.deleteOne();
+    res.status(ERROR_CODE.OK).send(card);
   } catch(err) {
     if(err instanceof CastError) {
       next(new IncorrectError('Переданы некорректные данные'));
