@@ -29,24 +29,24 @@ module.exports.createCard = (req, res, next) => {
       });
 }
 
-module.exports.deleteCard = async (req, res, next) => {
-  try {
-    const card = await Card.findByIdAndRemove(req.params.cardId);
-    if(!card) {
-      next(new NotFoundError('Карточка не найдена'));
-      return;
-    }
-    if(card.owner.toString() !== req.user._id.toString()) {
-      throw new AccessError('Ошибка прав доступа');
-    }
-    res.status(ERROR_CODE.OK).send(card);
-  } catch(err) {
-    if(err instanceof CastError) {
-      next(new IncorrectError('Переданы некорректные данные'));
-      return;
-    }
-    next(err);
-  }
+module.exports.deleteCard =  (req, res, next) => {
+    Card
+      .findByIdAndRemove(req.params.cardId)
+      .orFail(() => {
+        throw new NotFoundError('Карточка не найдена');
+      })
+      .then((card) => {
+        if(card.owner.toString() !== req.user._id.toString()) {
+          throw new AccessError('Ошибка прав доступа');
+        }
+        res.status(ERROR_CODE.OK).send({ message: 'Карточка удалена'});
+      })
+      .catch((err) => {
+        if(err instanceof CastError) {
+          return next(new IncorrectError('Переданы некорректные данные'));
+        }
+        return next(err);
+      })
 }
 
 module.exports.likeCard = (req, res, next) => {
