@@ -31,7 +31,7 @@ module.exports.createCard = (req, res, next) => {
 
 module.exports.deleteCard = async (req, res, next) => {
   try {
-    const card = await Card.findByIdAndRemove(req.params.cardId);
+    const card = await Card.findById(req.params.cardId);
     if(!card) {
       next(new NotFoundError('Карточка не найдена'));
       return;
@@ -39,7 +39,11 @@ module.exports.deleteCard = async (req, res, next) => {
     if(card.owner.toString() !== req.user._id.toString()) {
       throw new AccessError('Ошибка прав доступа');
     }
-    res.status(ERROR_CODE.OK).send(card);
+    console.log(card.owner);
+    console.log(req.user._id);
+    card.deleteOne().then(() => {
+      res.status(ERROR_CODE.OK).send(card);
+    })
   } catch(err) {
     if(err instanceof CastError) {
       next(new IncorrectError('Переданы некорректные данные'));

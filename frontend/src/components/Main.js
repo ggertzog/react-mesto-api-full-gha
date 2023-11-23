@@ -28,7 +28,7 @@ function Main({cards, onEditProfile, onAddPlace, onEditAvatar, onCardClick, onCa
               </button>
           </section>
           <section className="elements">
-              {cards.map((card) => {
+              {cards.slice().reverse().map((card) => {
                 return( 
                     <Card 
                         card={card}
