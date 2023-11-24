@@ -9,6 +9,7 @@ const { login, createUser } = require('./controllers/users');
 const auth = require('./middlewares/auth');
 const { signinValidate, signupValidate } = require('./middlewares/requestValidation');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
+const { centralErrorHandler } = require('./middlewares/centalErrorHandler');
 
 const { PORT, DB_ADDRESS } = process.env;
 
@@ -43,18 +44,10 @@ app.use(router);
 // логгер ошибок
 app.use(errorLogger);
 
-// центральный обработчик ошибок celebrate
+// обработчик ошибок celebrate
 app.use(errors());
 
 // централизованный обработчик ошибок
-app.use((err, req, res, next) => {
-  const { statusCode = 500, message } = err;
-  res.status(statusCode).send({
-    message: statusCode === 500
-      ? 'На сервере произошла ошибка'
-      : message
-  });
-  next();
-});
+app.use(centralErrorHandler);
 
 app.listen(PORT);
